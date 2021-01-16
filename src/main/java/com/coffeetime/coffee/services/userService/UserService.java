@@ -13,13 +13,17 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    //Change the way the password are saved later. It's just a test for now.
     public String userRegister(UserModel user){
         if (user == null || user.getUsername().equals("") || user.getPassword().equals("")){
-            return "Confira se todos os campos estão preenchidos!";
+            return "Check if all of the fields are correct!";
         }else{
-            userRepository.save(user);
+            if (userRepository.findByUsername(user.getUsername()) == null){
+                userRepository.save(user);
+            }else{
+                return "Username " + user.getUsername() +  " has already taken! Choose another one please!";
+            }
         }
-        return "Sucesso";
+        return "Success";
     }
 }
-//MUDAR COMITT, TIRAR SENHAS DO DATABASE FILE
