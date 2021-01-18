@@ -1,13 +1,12 @@
 package com.coffeetime.coffee.controllers;
 
-import com.coffeetime.coffee.models.coffeeModels.CoffeeModel;
 import com.coffeetime.coffee.services.coffeeServices.CoffeeServices;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/coffees")
 public class CoffeeController {
 
     CoffeeServices coffeeServices;
@@ -16,9 +15,21 @@ public class CoffeeController {
         this.coffeeServices = coffeeServices;
     }
 
-    @GetMapping("/coffees")
-    public List<CoffeeModel> GetCoffeeList(){
-        return coffeeServices.allCoffee();
+    //returning all of the coffees within the database.
+    @GetMapping()
+    public ResponseEntity getCoffeeList(){
+        if (coffeeServices.allCoffee() == null){
+            return new ResponseEntity("There's no coffees within the database", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(coffeeServices.allCoffee(),HttpStatus.OK);
     }
 
+    //returning a coffee specified by the name.
+    @GetMapping("/{coffeeName}")
+    public ResponseEntity getFilteredCoffee(@PathVariable(value = "coffeeName") String coffeeName){
+        if (coffeeServices.getSingleCoffee(coffeeName) == null){
+            return new ResponseEntity("There's no coffees with this name!",HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(coffeeServices.getSingleCoffee(coffeeName),HttpStatus.OK);
+    }
 }
