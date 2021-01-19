@@ -2,9 +2,22 @@ package com.coffeetime.coffee.models.coffeeModels;
 
 import javax.persistence.*;
 
+/**Entity class for database integration
+ * @Author: Leonardo Soares.
+ * @Date:   01/19/2021.
+ */
 @Entity
 @Table(name = "Coffees")
 public class CoffeeModel {
+
+    /**
+     * Attributes:
+     *              coffeeId:       Long
+     *              coffeeName:     String
+     *              country:        String
+     *              price:          double
+     *              isCold:         boolean
+     */
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
