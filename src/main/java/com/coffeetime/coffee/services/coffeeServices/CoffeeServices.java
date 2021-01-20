@@ -36,20 +36,22 @@ public class CoffeeServices{
 
     /**Method to get only a single Coffee.
      * @param coffeeName String - The name of the coffee.
-     * @return Coffee Model - A single object of coffee.
+     * @return Coffee Model     - A single object of coffee.
      */
     public CoffeeModel getSingleCoffee(String coffeeName){
         return coffeeRepository.findByCoffeeName(coffeeName);
     }
 
     /**Method to find coffees specified by the param from the requisition.
-     * @param coffeeName - Params that comes from the HTTP requisition.
-     * @return - Return a list of coffees specified by the param.
+     * @param coffeeName  - Params that comes from the HTTP requisition.
+     * @return            - Return a list of coffees specified by the param.
      */
-    public List<CoffeeModel> getCoffeesByParamsService(String coffeeName){
-        if (coffeeRepository.findCoffeesByParams(coffeeName).size() == 0){
+    public List<CoffeeModel> getCoffeesByParamsService(String coffeeName, String coffeeCountry){
+
+        if (coffeeRepository.findCoffeesByParams(coffeeName, coffeeCountry).size() == 0){
+            System.out.println("Não encontrou nada no database!");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return coffeeRepository.findCoffeesByParams(coffeeName);
+        return coffeeRepository.findCoffeesByParams(coffeeName, coffeeCountry);
     }
 }

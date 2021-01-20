@@ -43,7 +43,8 @@ public class CoffeeController {
 
     //busca uma coffee pelo nome.
     @GetMapping("/filter")
-    public ResponseEntity getCoffeesByParams(@RequestParam (value = "coffeeName", required = false)String coffeeName){
-        return new ResponseEntity(coffeeServices.getCoffeesByParamsService(coffeeName), HttpStatus.OK);
+    public ResponseEntity getCoffeesByParams(@RequestParam (value = "coffeeName", required = false, defaultValue = "")String coffeeName,
+                                             @RequestParam (value = "coffeeCountry", required = false, defaultValue = "") String coffeeCountry){
+        return new ResponseEntity(coffeeServices.getCoffeesByParamsService(coffeeName, coffeeCountry), HttpStatus.OK);
     }
 }

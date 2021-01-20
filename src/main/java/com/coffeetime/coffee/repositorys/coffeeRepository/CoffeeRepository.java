@@ -21,11 +21,12 @@ public interface CoffeeRepository extends CrudRepository<CoffeeModel,Long> {
 
     /**Another Custom query write by hand.
      *
-     * @param coffeeName
-     * @return
+     * @param coffeeName    -
+     * @param coffeeCountry -
+     * @return              -
      */
-    //buscando uma lista de cafés pelo nome
-    @Query(value = "SELECT coffee_id, coffee_name, country, is_cold, price FROM Coffees WHERE coffee_name = ?1 ",
+    //Working!
+    @Query(value = "SELECT coffee_id, coffee_name, country, is_cold, price FROM Coffees WHERE coffee_name = ?1 OR country = ?2",
             nativeQuery = true)
-    List<CoffeeModel> findCoffeesByParams(String coffeeName);
+    List<CoffeeModel> findCoffeesByParams(String coffeeName, String coffeeCountry);
 }
