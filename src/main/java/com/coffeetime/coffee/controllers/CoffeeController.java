@@ -41,7 +41,7 @@ public class CoffeeController {
         return new ResponseEntity(coffeeServices.getSingleCoffee(coffeeName),HttpStatus.OK);
     }
 
-    //busca uma coffee pelo nome.
+    //busca uma coffee pelo nome ou pelo pais até o momento.
     @GetMapping("/filter")
     public ResponseEntity getCoffeesByParams(@RequestParam (value = "coffeeName", required = false, defaultValue = "")String coffeeName,
                                              @RequestParam (value = "coffeeCountry", required = false, defaultValue = "") String coffeeCountry){

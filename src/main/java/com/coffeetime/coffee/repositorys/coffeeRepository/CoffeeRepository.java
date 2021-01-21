@@ -19,11 +19,11 @@ public interface CoffeeRepository extends CrudRepository<CoffeeModel,Long> {
      */
     CoffeeModel findByCoffeeName(String coffeeName);
 
-    /**Another Custom query write by hand.
+    /**Another Custom query write by hand finding the coffee by the name or by the country.
      *
-     * @param coffeeName    -
-     * @param coffeeCountry -
-     * @return              -
+     * @param coffeeName    -   coffee name from request
+     * @param coffeeCountry -   coffee country from request
+     * @return              -   return a list of coffee which match with the query.
      */
     //Working!
     @Query(value = "SELECT coffee_id, coffee_name, country, is_cold, price FROM Coffees WHERE coffee_name = ?1 OR country = ?2",
