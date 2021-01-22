@@ -5,14 +5,15 @@ import com.coffeetime.coffee.repositorys.coffeeRepository.CoffeeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
 
 /**Service Class
- * @Author:     Leonardo Soares.
- * @Date:       01/19/2021
+ * @author:     Leonardo Soares.
+ * @date:       01/19/2021
  * Attributes:  coffeeRepository: CoffeeRepository instance
  */
 @Service
@@ -35,23 +36,40 @@ public class CoffeeServices{
     }
 
     /**Method to get only a single Coffee.
-     * @param coffeeName String - The name of the coffee.
-     * @return Coffee Model     - A single object of coffee.
+     *
+     * @param coffeeName        - String - The name of the coffee.
+     * @return Coffee Model     - A single object of CoffeeModel class.
      */
     public CoffeeModel getSingleCoffee(String coffeeName){
         return coffeeRepository.findByCoffeeName(coffeeName);
     }
 
     /**Method to find coffees specified by the param from the requisition.
+     *
      * @param coffeeName  - Params that comes from the HTTP requisition.
-     * @return            - Return a list of coffees specified by the param.
+     * @return            - List of CoffeesModel.
      */
-    public List<CoffeeModel> getCoffeesByParamsService(String coffeeName, String coffeeCountry){
+    public List<CoffeeModel> getCoffeesByFilter(String coffeeName, String coffeeCountry){
 
         if (coffeeRepository.findCoffeesByParams(coffeeName, coffeeCountry).size() == 0){
-            System.out.println("Não encontrou nada no database!");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return coffeeRepository.findCoffeesByParams(coffeeName, coffeeCountry);
+    }
+
+    /**Insert new coffees to the database service.
+     *
+     * @author: Leonardo Soares.
+     * @date:   01/22/2021.
+     *
+     * @param coffee    -   CoffeeModel object from the CoffeeController.
+     * @return          -   Return a String message.
+     */
+    public String insertNewCoffee(CoffeeModel coffee){
+        if (coffee == null || coffee.getCoffeeName().equals("") || coffee.getCountry().equals("") || coffee.getPrice() == 0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        coffeeRepository.save(coffee);
+        return "Coffee inserted with success.";
     }
 }

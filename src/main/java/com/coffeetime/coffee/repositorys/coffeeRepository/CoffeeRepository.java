@@ -7,22 +7,23 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 /**Repository interface.
- * @Author: Leonardo Soares.
- * @Date:   01/19/2021.
+ *
+ * @author :  Leonardo Soares.
+ * @since  :   01/19/2021.
  * This interface extends another interface which has crud methods ready to be used.
  */
 public interface CoffeeRepository extends CrudRepository<CoffeeModel,Long> {
     /**Custom query method.
      *
-     * @param coffeeName - Name of a coffee.
-     * @return - Return a coffee object with all information about it. (Id, Name, Country, Price).
+     * @param coffeeName - String - Name of a coffee.
+     * @return           - Return a coffee object with all information about it. (Id, Name, Country, Price).
      */
     CoffeeModel findByCoffeeName(String coffeeName);
 
     /**Another Custom query write by hand finding the coffee by the name or by the country.
      *
-     * @param coffeeName    -   coffee name from request
-     * @param coffeeCountry -   coffee country from request
+     * @param coffeeName    -   String - coffee name from request
+     * @param coffeeCountry -   String - coffee country from request
      * @return              -   return a list of coffee which match with the query.
      */
     //Working!
