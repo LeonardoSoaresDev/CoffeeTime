@@ -1,8 +1,7 @@
-package com.coffeetime.coffee.controllers;
+package com.coffeetime.coffee.api;
 
 import com.coffeetime.coffee.models.coffeeModels.CoffeeModel;
 import com.coffeetime.coffee.services.coffeeServices.CoffeeServices;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +10,13 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 /**Rest controller with HTTP method.
- * @author : Leonardo Soares.
- * @since  : 01/19/2021.
+ * @author  Leonardo Soares.
+ * @since   01/19/2021.
  */
 
 @RestController
-@RequestMapping("/coffees")
+@CrossOrigin(origins = "*")
+@RequestMapping("/api/v1")
 public class CoffeeController {
 
     //Injection Dependency
@@ -71,7 +71,7 @@ public class CoffeeController {
      * @param coffee    -   Object of CoffeeModel class.
      * @return          -   Return a String message and HTTP status code.
      */
-    @PostMapping("/insert")
+    @PostMapping()
     public ResponseEntity<?> postNewCoffee(CoffeeModel coffee){
         return new ResponseEntity<String>(coffeeServices.insertNewCoffee(coffee), HttpStatus.OK);
     }

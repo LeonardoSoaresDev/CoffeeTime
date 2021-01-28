@@ -15,9 +15,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    //Change the way the password are saved later. It's just a test for now.
+    //This part of the project should be used with authentication token and the right ways to do authentications.
     public String userRegister(UserModel user){
-        if (user == null || user.getUsername().equals("") || user.getPassword().equals("")){
+        if (user == null || user.getUsername() == null || user.getPassword()== null || user.getUsername().equals("") || user.getPassword().equals("")){
             return "Check if all of the fields are correct!";
         }else{
             if (userRepository.findByUsername(user.getUsername()) == null){
@@ -29,7 +29,15 @@ public class UserService {
         return "Success";
     }
 
+    /**User Login method.
+     *
+     * @param userModel -   User object passed by the client in a form.
+     * @return          -   Return true if the user has the right credentials or a status code error if
+     */
     public boolean userLogin(UserModel userModel){
+        if (userModel == null || userModel.getUsername() == null || userModel.getPassword() == null || userModel.getUsername().equals("") || userModel.getPassword().equals("")){
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE);
+        }
         return userRepository.authenticateLogin(userModel.getUsername(), userModel.getPassword()) != null;
     }
 }

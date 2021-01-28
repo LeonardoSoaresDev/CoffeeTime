@@ -26,7 +26,6 @@ public interface CoffeeRepository extends CrudRepository<CoffeeModel,Long> {
      * @param coffeeCountry -   String - coffee country from request
      * @return              -   return a list of coffee which match with the query.
      */
-    //Working!
     @Query(value = "SELECT coffee_id, coffee_name, country, is_cold, price FROM Coffees WHERE coffee_name = ?1 OR country = ?2",
             nativeQuery = true)
     List<CoffeeModel> findCoffeesByParams(String coffeeName, String coffeeCountry);
