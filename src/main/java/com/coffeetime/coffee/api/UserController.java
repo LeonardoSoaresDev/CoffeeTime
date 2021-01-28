@@ -6,7 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-/**User Controller
+/**NOTE:
+ * This part of the project should be used with authentication token and the right ways to do authentications.
  * @author Leonardo Soares
  */
 
@@ -30,7 +31,7 @@ public class UserController {
         return userService.userRegister(user);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login")  //different way to post data using json format.
     public ResponseEntity<String> userLogin(@RequestBody UserModel userModel){
        if(userService.userLogin(userModel)){
             return new ResponseEntity<>(String.valueOf(HttpStatus.ACCEPTED),HttpStatus.ACCEPTED);

@@ -36,18 +36,16 @@ public class CoffeeController {
      */
     @GetMapping()
     public ResponseEntity<?> getCoffeeList(){
-        if (coffeeServices.allCoffee() == null){
-            return new ResponseEntity<String>("There's no coffees within the database", HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<List<CoffeeModel>>(coffeeServices.allCoffee(), HttpStatus.OK);
     }
 
-    //returning a coffee specified by the name.
+    /**Get method to bring only one coffee specified by the name.
+     *
+     * @param coffeeName    -   A coffee name
+     * @return              -   Return a coffee.
+     */
     @GetMapping("/{coffeeName}")
-    public ResponseEntity<CoffeeModel> getFilteredCoffee(@PathVariable(value = "coffeeName") String coffeeName){
-        if (coffeeServices.getSingleCoffee(coffeeName) == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<CoffeeModel> getCoffee(@PathVariable(value = "coffeeName") String coffeeName){
         return new ResponseEntity<CoffeeModel>(coffeeServices.getSingleCoffee(coffeeName),HttpStatus.OK);
     }
 

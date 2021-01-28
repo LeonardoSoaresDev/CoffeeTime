@@ -8,8 +8,8 @@ import java.util.List;
 
 /**Repository interface.
  *
- * @author :  Leonardo Soares.
- * @since  :   01/19/2021.
+ * @author   Leonardo Soares.
+ * @since     01/19/2021.
  * This interface extends another interface which has crud methods ready to be used.
  */
 public interface CoffeeRepository extends CrudRepository<CoffeeModel,Long> {
