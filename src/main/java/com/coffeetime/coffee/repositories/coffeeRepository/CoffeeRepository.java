@@ -1,4 +1,4 @@
-package com.coffeetime.coffee.repositorys.coffeeRepository;
+package com.coffeetime.coffee.repositories.coffeeRepository;
 
 import com.coffeetime.coffee.models.coffeeModels.CoffeeModel;
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +18,7 @@ public interface CoffeeRepository extends CrudRepository<CoffeeModel,Long> {
      * @param coffeeName - String - Name of a coffee.
      * @return           - Return a coffee object with all information about it. (Id, Name, Country, Price).
      */
-    CoffeeModel findByCoffeeName(String coffeeName);
+    List<CoffeeModel> findByCoffeeName(String coffeeName);
 
     /**Another Custom query write by hand finding the coffee by the name or by the country.
      *

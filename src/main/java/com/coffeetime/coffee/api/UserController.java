@@ -31,8 +31,8 @@ public class UserController {
         return userService.userRegister(user);
     }
 
-    @PostMapping("/login")  //different way to post data using json format.
-    public ResponseEntity<String> userLogin(@RequestBody UserModel userModel){
+    @PostMapping("/login")
+    public ResponseEntity<?> userLogin(UserModel userModel){
        if(userService.userLogin(userModel)){
             return new ResponseEntity<>(String.valueOf(HttpStatus.ACCEPTED),HttpStatus.ACCEPTED);
        }

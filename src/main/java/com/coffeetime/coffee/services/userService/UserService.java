@@ -1,7 +1,7 @@
 package com.coffeetime.coffee.services.userService;
 
 import com.coffeetime.coffee.models.userModels.UserModel;
-import com.coffeetime.coffee.repositorys.userRepository.UserRepository;
+import com.coffeetime.coffee.repositories.userRepository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,27 +28,46 @@ public class UserService {
      * @return      - Return a message if the user registration is successful or an error.
      */
     public String userRegister(UserModel user){
-        if (user == null || user.getUsername() == null || user.getPassword()== null || user.getUsername().equals("") || user.getPassword().equals("")){
-            return "Check if all of the fields are correct!";
-        }else{
-            if (userRepository.findByUsername(user.getUsername()) == null){
-                userRepository.save(user);
-            }else{
-                return "Username " + user.getUsername() +  " has already taken! Choose another one please!";
-            }
+        var userValidation = isValid(user);
+        var userDB = userRepository;
+
+        if (!userValidation){
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE);
         }
+
+        if (userDB.findByUsername(user.getUsername()) != null) {
+            return "Username " + user.getUsername() + " has already taken! Choose another one please!";
+        }
+        userDB.save(user);
         return "Success";
     }
 
     /**User Login method.
      *
-     * @param userModel -   User object passed by the client in a form.
+     * @param user      -   User object passed by the client in a form.
      * @return          -   Return true if the user has the right credentials or a status code error.
      */
-    public boolean userLogin(UserModel userModel){
-        if (userModel == null || userModel.getUsername() == null || userModel.getPassword() == null || userModel.getUsername().equals("") || userModel.getPassword().equals("")){
+    public boolean userLogin(UserModel user){
+        var userValidation = isValid(user);
+        if (!userValidation){
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE);
         }
-        return userRepository.authenticateLogin(userModel.getUsername(), userModel.getPassword()) != null;
+        var userLoginRepository = userRepository.authenticateLogin(user.getUsername(),user.getPassword());
+        return userLoginRepository != null;
+    }
+
+    /**Validation method.
+     * @author Leonardo Soares
+     * @since  01/29/2021
+     * @param user  - User object passed by the methods that implements this method.
+     * @return      - Returns true the fields is not empty or false if its empty.
+     */
+    private boolean isValid(UserModel user){
+        return user != null &&
+                user.getUsername() != null &&
+                !user.getUsername().equals("") &&
+                user.getPassword() != null &&
+                !user.getPassword().equals("");
+
     }
 }
