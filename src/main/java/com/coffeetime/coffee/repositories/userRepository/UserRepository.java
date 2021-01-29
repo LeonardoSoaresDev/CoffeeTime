@@ -1,4 +1,4 @@
-package com.coffeetime.coffee.repositorys.userRepository;
+package com.coffeetime.coffee.repositories.userRepository;
 
 import com.coffeetime.coffee.models.userModels.UserModel;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +13,7 @@ public interface UserRepository extends CrudRepository<UserModel,Long>{
      * @param password  - Password comes from the user requisition.
      * @return          - Return a user if both fields are correct.
      */
-    @Query(value = "SELECT user_id, username, password FROM Users WHERE username = ?1 AND password = ?2", nativeQuery = true)
+    @Query(value = "SELECT user_id, username, password FROM Users WHERE username = ?1 AND password = ?2",
+            nativeQuery = true)
     UserModel authenticateLogin(String username, String password);
 }

@@ -3,8 +3,8 @@ package com.coffeetime.coffee.models.coffeeModels;
 import javax.persistence.*;
 
 /**Entity class for database integration
- * @Author: Leonardo Soares.
- * @Date:   01/19/2021.
+ * @author Leonardo Soares.
+ * @since  01/19/2021.
  */
 @Entity
 @Table(name = "Coffees")

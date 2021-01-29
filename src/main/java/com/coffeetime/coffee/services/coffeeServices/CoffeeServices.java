@@ -1,13 +1,10 @@
 package com.coffeetime.coffee.services.coffeeServices;
 
 import com.coffeetime.coffee.models.coffeeModels.CoffeeModel;
-import com.coffeetime.coffee.repositorys.coffeeRepository.CoffeeRepository;
+import com.coffeetime.coffee.repositories.coffeeRepository.CoffeeRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
 
@@ -42,11 +39,12 @@ public class CoffeeServices{
      * @param coffeeName    - A coffee name send by the user request.
      * @return              - Return the coffee if exist within the database.
      */
-    public CoffeeModel getSingleCoffee(String coffeeName){
-        if (coffeeRepository.findByCoffeeName(coffeeName) == null){
+    public List<CoffeeModel> getSingleCoffee(String coffeeName){
+        var coffee = coffeeRepository.findByCoffeeName(coffeeName);
+        if (coffee == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return coffeeRepository.findByCoffeeName(coffeeName);
+        return coffee;
     }
 
     /**Method to filter coffees specified by the param from the requisition.
@@ -56,10 +54,11 @@ public class CoffeeServices{
      * @return                  -   Return a list of coffee.
      */
     public List<CoffeeModel> getCoffeesByFilter(String coffeeName, String coffeeCountry){
-        if (coffeeRepository.findCoffeesByParams(coffeeName, coffeeCountry).size() == 0){
+        var coffeeList = coffeeRepository.findCoffeesByParams(coffeeName,coffeeCountry);
+        if (coffeeList.size() == 0){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return coffeeRepository.findCoffeesByParams(coffeeName, coffeeCountry);
+        return coffeeList;
     }
 
     /**Insert new coffees to the database.
@@ -71,10 +70,27 @@ public class CoffeeServices{
      * @return          -   Return a String success message.
      */
     public String insertNewCoffee(CoffeeModel coffee){
-        if (coffee == null || coffee.getCoffeeName().equals("") || coffee.getCountry().equals("") || coffee.getPrice() == 0){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        var coffeeValidation = isValid(coffee);
+        if (!coffeeValidation){
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE);
         }
         coffeeRepository.save(coffee);
         return "Coffee inserted with success.";
+    }
+
+    /**Validation field method.
+     *
+     * @author Leonardo Soares
+     * @since  01/29/2021
+     * @param coffee    - Coffee object from the methods that uses this method.
+     * @return          - Return true if non of the field are empty.
+     */
+    private boolean isValid(CoffeeModel coffee){
+        return coffee != null &&
+                coffee.getCoffeeName() != null &&
+                !coffee.getCoffeeName().equals("") &&
+                coffee.getCountry() != null &&
+                !coffee.getCountry().equals("") &&
+                coffee.getPrice() != 0;
     }
 }

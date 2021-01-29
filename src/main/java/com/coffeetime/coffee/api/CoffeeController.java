@@ -36,7 +36,7 @@ public class CoffeeController {
      */
     @GetMapping()
     public ResponseEntity<?> getCoffeeList(){
-        return new ResponseEntity<List<CoffeeModel>>(coffeeServices.allCoffee(), HttpStatus.OK);
+        return new ResponseEntity<>(coffeeServices.allCoffee(), HttpStatus.OK);
     }
 
     /**Get method to bring only one coffee specified by the name.
@@ -45,8 +45,8 @@ public class CoffeeController {
      * @return              -   Return a coffee.
      */
     @GetMapping("/{coffeeName}")
-    public ResponseEntity<CoffeeModel> getCoffee(@PathVariable(value = "coffeeName") String coffeeName){
-        return new ResponseEntity<CoffeeModel>(coffeeServices.getSingleCoffee(coffeeName),HttpStatus.OK);
+    public ResponseEntity<?> getCoffee(@PathVariable(value = "coffeeName") String coffeeName){
+        return new ResponseEntity<>(coffeeServices.getSingleCoffee(coffeeName),HttpStatus.OK);
     }
 
     /**Method to get a coffee by the name or country
@@ -56,8 +56,10 @@ public class CoffeeController {
      * @return                  -   Return coffees that has the name or the country specified.
      */
     @GetMapping("/filter")
-    public ResponseEntity<?> getCoffeesByParams(@RequestParam (value = "coffeeName", required = false, defaultValue = "")String coffeeName,
-                                             @RequestParam (value = "coffeeCountry", required = false, defaultValue = "") String coffeeCountry){
+    public ResponseEntity<?> getCoffeesByParams(
+            @RequestParam (value = "coffeeName", required = false, defaultValue = "")String coffeeName,
+            @RequestParam (value = "coffeeCountry", required = false, defaultValue = "") String coffeeCountry){
+
         return new ResponseEntity<>(coffeeServices.getCoffeesByFilter(coffeeName, coffeeCountry), HttpStatus.OK);
     }
 
@@ -71,6 +73,6 @@ public class CoffeeController {
      */
     @PostMapping()
     public ResponseEntity<?> postNewCoffee(CoffeeModel coffee){
-        return new ResponseEntity<String>(coffeeServices.insertNewCoffee(coffee), HttpStatus.OK);
+        return new ResponseEntity<>(coffeeServices.insertNewCoffee(coffee), HttpStatus.OK);
     }
 }
