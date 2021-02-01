@@ -75,4 +75,14 @@ public class CoffeeController {
     public ResponseEntity<?> postNewCoffee(CoffeeModel coffee){
         return new ResponseEntity<>(coffeeServices.insertNewCoffee(coffee), HttpStatus.OK);
     }
+
+    @DeleteMapping()
+    public ResponseEntity<?> deleteCoffee(@RequestParam (name = "coffeeName") String coffeeName){
+        return new ResponseEntity<>(coffeeServices.deleteCoffeeService(coffeeName), HttpStatus.OK);
+    }
+
+    @PutMapping()
+    public ResponseEntity<?> updateCoffee(@RequestParam(name = "coffeeName") String coffeeName, double price){
+        return new ResponseEntity<>(coffeeServices.updateCoffeeService(coffeeName, price), HttpStatus.OK);
+    }
 }
