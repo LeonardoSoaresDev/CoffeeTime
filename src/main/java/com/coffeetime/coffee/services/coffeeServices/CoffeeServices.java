@@ -39,10 +39,10 @@ public class CoffeeServices{
      * @param coffeeName    - A coffee name send by the user request.
      * @return              - Return the coffee if exist within the database.
      */
-    public List<CoffeeModel> getSingleCoffee(String coffeeName){
+    public CoffeeModel getSingleCoffee(String coffeeName){
         var coffee = coffeeRepository.findByCoffeeName(coffeeName);
         if (coffee == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No coffee was found");
         }
         return coffee;
     }
@@ -56,7 +56,7 @@ public class CoffeeServices{
     public List<CoffeeModel> getCoffeesByFilter(String coffeeName, String coffeeCountry){
         var coffeeList = coffeeRepository.findCoffeesByParams(coffeeName,coffeeCountry);
         if (coffeeList.size() == 0){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exists coffees with this params");
         }
         return coffeeList;
     }
@@ -71,11 +71,38 @@ public class CoffeeServices{
      */
     public String insertNewCoffee(CoffeeModel coffee){
         var coffeeValidation = isValid(coffee);
+
         if (!coffeeValidation){
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE);
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "You need to fill all fields");
         }
+
+        var coffeeDB = coffeeRepository.findByCoffeeName(coffee.getCoffeeName());
+
+        if (coffeeDB != null && !coffeeDB.getCoffeeName().equals("")){
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "The coffee name already exists in the database");
+        }
+
         coffeeRepository.save(coffee);
         return "Coffee inserted with success.";
+    }
+
+    public String deleteCoffeeService(String coffeeName){
+        var coffeeDB = coffeeRepository.findByCoffeeName(coffeeName);
+
+        if (coffeeDB == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There's no coffee with this name!");
+        }
+        coffeeRepository.delete(coffeeDB);
+        return "Deleted!";
+    }
+
+    public String updateCoffeeService(String coffeeName, double price){
+
+        if (coffeeName == null || coffeeName.equals("") || price == 0 || price < 0 || coffeeRepository.updateCoffeeByName(coffeeName,price) < 1){
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Verify if all fields are correct");
+        }
+        return "Update success!";
     }
 
     /**Validation field method.

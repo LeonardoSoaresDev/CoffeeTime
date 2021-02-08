@@ -1,9 +1,11 @@
 package com.coffeetime.coffee.repositories.coffeeRepository;
 
 import com.coffeetime.coffee.models.coffeeModels.CoffeeModel;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**Repository interface.
@@ -18,7 +20,7 @@ public interface CoffeeRepository extends CrudRepository<CoffeeModel,Long> {
      * @param coffeeName - String - Name of a coffee.
      * @return           - Return a coffee object with all information about it. (Id, Name, Country, Price).
      */
-    List<CoffeeModel> findByCoffeeName(String coffeeName);
+    CoffeeModel findByCoffeeName(String coffeeName);
 
     /**Another Custom query write by hand finding the coffee by the name or by the country.
      *
@@ -26,7 +28,15 @@ public interface CoffeeRepository extends CrudRepository<CoffeeModel,Long> {
      * @param coffeeCountry -   String - coffee country from request
      * @return              -   return a list of coffee which match with the query.
      */
-    @Query(value = "SELECT coffee_id, coffee_name, country, is_cold, price FROM Coffees WHERE coffee_name = ?1 OR country = ?2",
+    @Query(value = "SELECT coffee_id, coffee_name, country, is_cold, " +
+            "price FROM Coffees WHERE coffee_name = ?1 OR country = ?2",
             nativeQuery = true)
     List<CoffeeModel> findCoffeesByParams(String coffeeName, String coffeeCountry);
+
+
+    @Transactional
+    @Modifying()
+    @Query(value = "UPDATE Coffees SET price = ?2 WHERE coffee_name = ?1", nativeQuery = true)
+    int updateCoffeeByName(String coffeeName, double price);
+
 }
