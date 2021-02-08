@@ -99,10 +99,10 @@ public class CoffeeServices{
 
     public String updateCoffeeService(String coffeeName, double price){
 
-        if (coffeeName == null || coffeeName.equals("") || price == 0 || price < 0){
+        if (coffeeName == null || coffeeName.equals("") || price == 0 || price < 0 || coffeeRepository.updateCoffeeByName(coffeeName,price) < 1){
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Verify if all fields are correct");
         }
-        return "Update success! Number of entities updated!" + coffeeRepository.updateCoffeeByName(coffeeName,price);
+        return "Update success!";
     }
 
     /**Validation field method.
