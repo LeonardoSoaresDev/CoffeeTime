@@ -3,7 +3,7 @@ Web Java Application API
 
 This is a simple project, with the objective of learning more about how the backend works using Spring Boot Framework.
 
-In this project you will see a simple Rest API that only records and retrieves data from a database.
+In this project you will see a simple Rest API using the CRUD methods (Create, Research, Update, Delete).
 
 To facilitate interaction with the database, JPA and Hibernate were used, together with the PgAdmin of the PostgreSQL database.
 
